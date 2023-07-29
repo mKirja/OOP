@@ -28,7 +28,7 @@ class Student:
     return average
 
   def __str__(self):
-    res = f'Имя: {self.name}\nФамилия: {self.surname}\nСредняя оценка за домашние задания: {self._average_rating_st()} \nКурсы в процессе изучения: {",".join(self.courses_in_progress)}\nЗавершенные курсы: {",".join(self.finished_courses)}'
+    res = f'Имя: {self.name}\nФамилия: {self.surname}\nСредняя оценка за домашние задания: {self._average_rating_st():.2f} \nКурсы в процессе изучения: {",".join(self.courses_in_progress)}\nЗавершенные курсы: {",".join(self.finished_courses)}'
     return res
 
   def __lt__(self, student):
@@ -57,7 +57,7 @@ class Lecturer(Mentor): #лекторы
         return average
 
     def __str__(self):
-        res = f'Имя: {self.name}\nФамилия: {self.surname}\nСредняя оценка за лекции: {self._average_rating_lec()}'
+        res = f'Имя: {self.name}\nФамилия: {self.surname}\nСредняя оценка за лекции: {self._average_rating_lec():.2f}'
         return res
     
     def __lt__(self, lecturer):
@@ -121,6 +121,10 @@ student_1.rate_lec(lecturer_2, 'Python', 8)
 student_2.rate_lec(lecturer_2, 'Python', 10)
 student_2.rate_lec(lecturer_1, 'Python', 7)
 
+print('Оценки лекторов:')
+print()
+print('Оценки студентов:')
+
 print('Эксперты:')
 print(reviewer_1)
 print(reviewer_2)
@@ -136,5 +140,38 @@ print(student_1)
 print(student_2)
 print()
 
+print('Сравнение студентов по средней оценке:')
 print(student_1 > student_2)
+print('Сравнение лекторов по средней оценке:')
 print(lecturer_1 < lecturer_2)
+print()
+
+def total_average_for_students(students, course): #средняя оценка по всем студентам
+  grade = []
+  for student in students:
+    if course in student.grades:
+      for key, value in student.grades.items():
+        if key == course:
+          for num in value:
+            grade.append(num)
+    else:
+      return 'Student does not take this course'
+  total_average = sum(grade) / len(grade)
+  return total_average
+
+def total_average_for_lecturer(lecturers, course): #средняя оценка по всем лекторам
+  grade = []
+  for lecturer in lecturers:
+    if course in lecturer.grades:
+      for key, value in lecturer.grades.items():
+        if key == course:
+          for num in value:
+            grade.append(num)
+    else:
+      return 'Lecturer does not take this course'
+  total_average = sum(grade) / len(grade)
+  return total_average
+
+print(f'Средняя оценка по всем студентам: {total_average_for_students(students, "Python"):.2f}')
+print(f'Средняя оценка по всем лекторам: {total_average_for_lecturer(lecturers, "Python"):.2f}')
+ 
